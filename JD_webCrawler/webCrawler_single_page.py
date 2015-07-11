@@ -6,10 +6,22 @@ import sys, requests, bs4, urllib
 #sys.setdefaultencoding("utf8")
 FILECOUNTER = 1
 ATTRS = {}
+ATTRSVALUE = {}
+
+def testPicExist(url):
+    response = requests.get(url)
+    soup = bs4.BeautifulSoup(response.content, from_encoding="utf-8")
+    pic_url = soup.select('div#preview img')
+    pic_src = pic_url[0].attrs.get('src')
+    if pic_src == '':
+        return False
+    else:
+        return True
 
 def getItemInfoByOne(number, color, url):
     global FILECOUNTER
     global ATTRS
+    global ATTRVALUE
     response = requests.get(url)
     soup = bs4.BeautifulSoup(response.content, from_encoding="utf-8")
 
@@ -70,6 +82,11 @@ def getItemInfoByOne(number, color, url):
             continue
         temp.add(attrs_list[i][0])
         param_output.write(attrs_list[i][0] + '\t' + attrs_list[i][1] + '\n')
+        key = attrs_list[i][0]
+        value = attrs_list[i][1]
+        if key not in ATTRSVALUE:
+            ATTRSVALUE[key] = set()
+        ATTRSVALUE[key].add(value)
     param_output.write('url'.encode('utf-8') + '\t' + url.encode('utf-8'))
     param_output.close()
 
@@ -155,8 +172,11 @@ def getItemInfo(url):
     if length == 1:
         getItemInfoWithNoColor(url)
     else:
+        counter = 1
         for i in range(1, length):
-            getItemInfoByOne(i, colorUrls[i][0], colorUrls[i][1])
+            if testPicExist(colorUrls[i][1]):
+                getItemInfoByOne(counter, colorUrls[i][0], colorUrls[i][1])
+                counter += 1
     FILECOUNTER += 1
 
 # Get all the urls in the current web page
@@ -179,6 +199,7 @@ def getCurUrls(url, page):
 
 # store the whole sort's attributes
 def storeAttrs(attrs):
+    global ATTRSVALUE
     try:
         output = open("attrs.bat", 'rb')
         for line in output:
@@ -194,6 +215,13 @@ def storeAttrs(attrs):
     for i in sortDic:
         attrsOutput.write(i[0] + '\t' + str(i[1]) + '\n')
     attrsOutput.close()
+    
+    for (k, v) in ATTRSVALUE.items():
+        output = open(k + '.bat', 'wb')
+        output.write('ATTR/' + str(len(v)) + '\n')
+        for i in v:
+            output.write(i + '\n')
+        output.close()
 
 if __name__ == "__main__":
     '''
@@ -204,4 +232,4 @@ if __name__ == "__main__":
     storeAttrs(ATTRS)
     '''
     #getItemInfo('http://item.jd.com/1037568901.html')
-    getItemInfo('http://item.jd.com/1304570.html')
+    getItemInfo('http://item.jd.com/1384023385.html')
