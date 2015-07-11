@@ -71,7 +71,7 @@ def getMainUrls(url):
     global allCounter
     response = requests.get(url)
     soup = bs4.BeautifulSoup(response.content, from_encoding='utf-8')
-    word = soup.select('div#genre-nav ul li a')
+    word = soup.select('div#genre-nav ul li a.top-level-genre')
     urls_set = [()]
     counter = 0
     for i in word:
@@ -79,6 +79,15 @@ def getMainUrls(url):
         y = i.attrs.get('href')
         urls_set.append((x, y))
     length = len(urls_set)
+    
+    print length
+    fword = soup.select('ul.list.column.first ul.list.top-level-subgenres a')
+    print len(fword)
+    sword = soup.select('ul.list.column ul.list.top-level-subgenres > li a')
+    print len(sword)
+    for i in range(len(sword)):
+        print sword[i].string
+    '''
     for i in range(1, length):
         if os.path.exists(urls_set[i][0]) == False:
             os.mkdir(urls_set[i][0])
@@ -87,6 +96,7 @@ def getMainUrls(url):
         output = open('record.txt', 'ab')
         output.write(urls_set[i][0] + '\t' + allCounter + '\n')
         output.close()
+    '''
 
 
 if __name__ == "__main__":
