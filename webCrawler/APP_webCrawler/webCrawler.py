@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- encoding:utf-8 -*-
 import sys, requests, bs4, urllib, os
 
 allCounter = 0
@@ -47,7 +48,7 @@ def getItemInfo(name, url):
     global allCounter
     response = requests.get(url)
     soup = bs4.BeautifulSoup(response.content, from_encoding='utf-8')
-    app_name = (soup.select('div.left > h1'))[0].string
+    app_name = ((soup.select('div.left > h1'))[0].string)
     print app_name,
     pic_url = soup.select('div.artwork > img')
     # Choose the right icon
@@ -64,12 +65,12 @@ def getItemInfo(name, url):
             app_name += i
     
     # download the icon
-    pic_output = open(name + '/' + app_name + filetype, 'wb')
+    pic_output = open((name + '/' + app_name + filetype).encode('utf-8'), 'wb')
     pic_output.write(req.content)
 
     # download the name and url
-    output = open(name + '/' + app_name + '.txt', 'wb')
-    output.write(app_name)
+    output = open((name + '/' + app_name + '.txt').encode('utf-8'), 'wb')
+    output.write(app_name.encode('utf-8'))
     output.write(url)
     output.close()
     allCounter += 1
@@ -170,12 +171,22 @@ def getMainUrls(url):
         output.write(urls_set[i][0] + '\t' + allCounter + '\n')
         output.close()
 
+def getMissPage():
+    output = open('miss.txt', 'rb')
+    items = output.readlines()
+    for i in items:
+        x, y = i.split()
+        if os.path.exists(x) == False:
+            os.mkdir(x)
+        while(True):
+            try:
+                getItemInfo(x, y)
+                break
+            except:
+                print " fail..."
+                pass
+    output.close()
+
 if __name__ == "__main__":
-    #getItemInfo('Books','https://itunes.apple.com/us/app/advance-pdfs-pro-reader/id919169075?mt=8')
-    #getCurAllUrls('https://itunes.apple.com/us/genre/ios-books/id6018?mt=8&letter=A&page=1#page')
-    #getSortAllUrlsByAlpha('https://itunes.apple.com/us/genre/ios-books/id6018?mt=8&letter=A')
-    #getSortAllUrls('https://itunes.apple.com/us/genre/ios-books/id6018?mt=8')
     getMainUrls('https://itunes.apple.com/us/genre/ios/id36?mt=8')
-    #print allCounter
-    #CalculatePage('https://itunes.apple.com/us/genre/ios-books/id6018?mt=8&letter=A')
-    #CalculatePage('https://itunes.apple.com/us/genre/ios-books/id6018?mt=8&letter=A')
+    getMissPage()
