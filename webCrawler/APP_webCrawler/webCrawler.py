@@ -3,6 +3,46 @@ import sys, requests, bs4, urllib, os
 
 allCounter = 0
 
+# Check if next button exist
+def checkNext(url):
+    response = requests.get(url)
+    soup = bs4.BeautifulSoup(response.content, from_encoding='utf-8')
+    s = soup.select('a.paginate-more')
+    if len(soup.select('a.paginate-more')) == 0:
+        return None
+    else:
+        return s[0].attrs.get('href')
+
+# Calculate the number of pages
+def calculatePage(url):
+    print "========== Calculating pages =========="
+    response = requests.get(url)
+    soup = bs4.BeautifulSoup(response.content, from_encoding='utf-8')
+    word = soup.select('ul.list.paginate li a')
+    word_urls = []
+    nextUrl = checkNext(url)
+    # check if next button exist
+    if nextUrl == None:
+        for i in word:
+            if i.attrs.get('href') in word_urls:
+                break
+            word_urls.append(i.attrs.get('href'))
+    else:
+        word_urls.append(url)
+        i = checkNext(url)
+        while i != None:
+            word_urls.append(i)
+            response = requests.get(i)
+            soup = bs4.BeautifulSoup(response.content, from_encoding='utf-8')
+            i = checkNext(i)
+        # add the final page
+        i = word_urls[len(word_urls) - 1]
+        pos1 = i.rfind('=') + 1
+        pos2 = i.rfind('#')
+        word_urls.append(i[:pos1] + str(int(i[pos1:pos2])+1) + i[pos2:])
+    return word_urls
+
+# Get the Item info : Icon, Name, Url
 def getItemInfo(name, url):
     global allCounter
     response = requests.get(url)
@@ -10,67 +50,92 @@ def getItemInfo(name, url):
     app_name = (soup.select('div.left > h1'))[0].string
     print app_name,
     pic_url = soup.select('div.artwork > img')
+    # Choose the right icon
     for i in pic_url:
         if i.attrs.get('alt') == app_name:
             pic_src = i.attrs.get('src-swap-high-dpi')
     filetype = pic_src[pic_src.rfind('.'):]
     req = requests.get(pic_src)
+    # Handle if name include '/'
     if app_name.find('/') != -1:
         item = app_name.split('/')
         app_name = ''
         for i in item:
             app_name += i
     
+    # download the icon
     pic_output = open(name + '/' + app_name + filetype, 'wb')
     pic_output.write(req.content)
 
+    # download the name and url
     output = open(name + '/' + app_name + '.txt', 'wb')
+    output.write(app_name)
     output.write(url)
     output.close()
     allCounter += 1
     print " done..."
 
-def getCurAllUrls(name, url):
+# Get all apps urls in number page
+def getCurAllUrls(name, url, page):
     response = requests.get(url)
     soup = bs4.BeautifulSoup(response.content, from_encoding='utf-8')
     word = soup.select('div#selectedcontent a')
     word_urls = []
     for i in word:
         word_urls.append(i.attrs.get('href'))
+    # Handle HttpConnection
+    print "========== " + name + " Page " + str(page) + " =========="
     for i in word_urls:
+        curCounter = 0
         while(True):
+            # try 10 times otherwise record
+            if curCounter == 10:
+                output = open('miss.txt', 'ab')
+                output.write(name + '\t' + i + '\n')
+                output.close()
+                break
             try:
                 getItemInfo(name, i)
                 break
             except:
+                print " fail..."
+                curCounter += 1
                 pass
 
+# Number Page
+# https://itunes.apple.com/us/genre/ios-books/id6018?mt=8&letter=A
 def getSortAllUrlsByAlpha(name, url):
     response = requests.get(url)
     soup = bs4.BeautifulSoup(response.content, from_encoding='utf-8')
-    word = soup.select('div#selectedgenre > ul li a')
-    word_urls = []
-    for i in word:
-        if i.string.isdigit() or i.string == 'Next':
-            if i.string == 'Next':
-                break
-            word_urls.append(i.attrs.get('href'))
+    word_urls = calculatePage(url)
+    counter = 1
     for i in word_urls:
-        getCurAllUrls(name, i)
+        getCurAllUrls(name, i, counter)
+        counter += 1
 
+# Sort Page
+# https://itunes.apple.com/us/genre/ios-books/id6018?mt=8 
 def getSortAllUrls(name, url):
     response = requests.get(url)
     soup = bs4.BeautifulSoup(response.content, from_encoding='utf-8')
     word = soup.select('div#selectedgenre > ul li a')
-    # A-#
+    # get A-# pages
     word_url = [a.attrs.get('href') for a in word]
     for i in word_url:
         getSortAllUrlsByAlpha(name, i)
 
+# Main Page 
+# https://itunes.apple.com/us/genre/ios/id36?mt=8
 def getMainUrls(url):
     global allCounter
-    response = requests.get(url)
+    while(True):
+        try:
+            response = requests.get(url)
+            break
+        except:
+            pass
     soup = bs4.BeautifulSoup(response.content, from_encoding='utf-8')
+    # get top labels
     word = soup.select('div#genre-nav ul li a.top-level-genre')
     urls_set = [()]
     counter = 0
@@ -80,14 +145,22 @@ def getMainUrls(url):
         urls_set.append((x, y))
     length = len(urls_set)
     
-    print length
-    fword = soup.select('ul.list.column.first ul.list.top-level-subgenres a')
-    print len(fword)
-    sword = soup.select('ul.list.column ul.list.top-level-subgenres > li a')
-    print len(sword)
-    for i in range(len(sword)):
-        print sword[i].string
-    '''
+    # get second labels of Games
+    allWord = soup.select('ul.list.column ul.list.top-level-subgenres > li a')
+    gameWord = allWord[:18]
+    for i in gameWord:
+        x = ('Games/' + i.string).encode('utf-8')
+        y = i.attrs.get('href')
+        urls_set.append((x, y))
+
+    # get second labels of News
+    newsWord = allWord[18:]
+    for i in newsWord:
+        x = ('Newsstand/' + i.string).encode('utf-8')
+        y = i.attrs.get('href')
+        urls_set.append((x, y))
+
+    # process each sort
     for i in range(1, length):
         if os.path.exists(urls_set[i][0]) == False:
             os.mkdir(urls_set[i][0])
@@ -96,8 +169,6 @@ def getMainUrls(url):
         output = open('record.txt', 'ab')
         output.write(urls_set[i][0] + '\t' + allCounter + '\n')
         output.close()
-    '''
-
 
 if __name__ == "__main__":
     #getItemInfo('Books','https://itunes.apple.com/us/app/advance-pdfs-pro-reader/id919169075?mt=8')
@@ -105,4 +176,6 @@ if __name__ == "__main__":
     #getSortAllUrlsByAlpha('https://itunes.apple.com/us/genre/ios-books/id6018?mt=8&letter=A')
     #getSortAllUrls('https://itunes.apple.com/us/genre/ios-books/id6018?mt=8')
     getMainUrls('https://itunes.apple.com/us/genre/ios/id36?mt=8')
-    print allCounter
+    #print allCounter
+    #CalculatePage('https://itunes.apple.com/us/genre/ios-books/id6018?mt=8&letter=A')
+    #CalculatePage('https://itunes.apple.com/us/genre/ios-books/id6018?mt=8&letter=A')

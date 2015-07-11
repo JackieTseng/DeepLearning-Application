@@ -2,4 +2,5 @@
 
 Training project about Deep Learing
 
-> 1. Phase One : Data collect web crawler clear -- July 10th, 2015
+> Phase One : Data collect web crawler clear -- July 10th, 2015
+> Phase Two : Feature extraction
