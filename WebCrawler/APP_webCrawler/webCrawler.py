@@ -70,7 +70,7 @@ def getItemInfo(name, url):
 
     # download the name and url
     output = open((name + '/' + app_name + '.txt').encode('utf-8'), 'wb')
-    output.write(app_name.encode('utf-8'))
+    output.write(app_name.encode('utf-8') + '\n')
     output.write(url)
     output.close()
     allCounter += 1
@@ -109,10 +109,13 @@ def getSortAllUrlsByAlpha(name, url):
     response = requests.get(url)
     soup = bs4.BeautifulSoup(response.content, from_encoding='utf-8')
     word_urls = calculatePage(url)
-    counter = 1
-    for i in word_urls:
-        getCurAllUrls(name, i, counter)
-        counter += 1
+    if len(word_urls) == 0:
+        getCurAllUrls(name, url ,1)
+    else:
+        counter = 1
+        for i in word_urls:
+            getCurAllUrls(name, i, counter)
+            counter += 1
 
 # Sort Page
 # https://itunes.apple.com/us/genre/ios-books/id6018?mt=8 
@@ -144,7 +147,6 @@ def getMainUrls(url):
         x = i.string.encode('utf-8')
         y = i.attrs.get('href')
         urls_set.append((x, y))
-    length = len(urls_set)
     
     # get second labels of Games
     allWord = soup.select('ul.list.column ul.list.top-level-subgenres > li a')
@@ -162,13 +164,14 @@ def getMainUrls(url):
         urls_set.append((x, y))
 
     # process each sort
+    length = len(urls_set)
     for i in range(1, length):
         if os.path.exists(urls_set[i][0]) == False:
             os.mkdir(urls_set[i][0])
         allCounter = 0
         getSortAllUrls(urls_set[i][0], urls_set[i][1])
         output = open('record.txt', 'ab')
-        output.write(urls_set[i][0] + '\t' + allCounter + '\n')
+        output.write(urls_set[i][0] + '\t' + str(allCounter) + '\n')
         output.close()
 
 def getMissPage():
