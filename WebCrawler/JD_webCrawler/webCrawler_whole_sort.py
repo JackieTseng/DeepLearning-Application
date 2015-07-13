@@ -220,7 +220,14 @@ def storeMainSortAttrs(dirName, attrs):
             output.write(i + '\n')
         output.close()
 
-def processMainSort(dirName, page, url):
+def calculatePage(url):
+    response = requests.get(url)
+    soup = bs4.BeautifulSoup(response.content, from_encoding="utf-8")
+    page = soup.select('div#J_topPage i')
+    pages = (int(page[0].string) + 1)
+    return pages
+
+def processMainSort(dirName, url):
     global ATTRS
     global FILECOUNTER
     if os.path.exists(dirName) == False:
@@ -229,6 +236,7 @@ def processMainSort(dirName, page, url):
     middleStr = '&page='
     secondStr = 'ATTR'
     FILECOUNTER = 1
+    page = calculatePage(url)
     for i in range(1, page):
         print "========== " + dirName + " Page " + str(i) + " =========="
         processSinglePage(dirName, secondStr, url + middleStr + str(i), i)
@@ -239,17 +247,8 @@ main_urls = ['http://list.jd.com/list.html?cat=1672,2575,5257', 'http://list.jd.
              'http://list.jd.com/list.html?cat=1672,2575,5260', 'http://list.jd.com/list.html?cat=1672,2575,5258',
              'http://list.jd.com/list.html?cat=1672,2575,2580', 'http://list.jd.com/list.html?cat=1672,2575,5256',
              'http://list.jd.com/list.html?cat=1672,2575,12070', 'http://list.jd.com/list.html?cat=1672,2575,12069']
-main_page = []
-
-def calculatePage(url):
-    global main_page
-    for i in url:
-        response = requests.get(i)
-        soup = bs4.BeautifulSoup(response.content, from_encoding="utf-8")
-        page = soup.select('div#J_topPage i')
-        main_page.append(int(page[0].string) + 1)
 
 if __name__ == "__main__":
-    calculatePage(main_urls)
-    for i in range(9):
-        processMainSort(main_name[i], main_page[i], main_urls[i])
+    l = len(main_urls)
+    for i in range(l):
+        processMainSort(main_name[i], main_urls[i])
