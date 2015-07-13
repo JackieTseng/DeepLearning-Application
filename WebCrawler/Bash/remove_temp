@@ -1,0 +1,2 @@
+#!/bin/sh
+rm *.jpg *.png *.txt *.swp *.swo
