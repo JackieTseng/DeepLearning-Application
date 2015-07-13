@@ -1,0 +1,30 @@
+#! /bin/sh
+# check mode
+flag=0
+sleepTime=30
+while true;do
+    # ping baidu.com
+    # /dev/null -> black hole in linux
+    if ! ping -c 5  123.125.114.144 > /dev/null;then 
+        if [ $flag -eq 0 ];then
+            echo "ping deny -- stop thread"
+            flag=1
+            sleepTime=5
+            # do something
+            #./stop_task
+        else
+            echo "ping deny -- already stopped thread"
+        fi
+    else
+        if [ $flag -eq 1 ];then
+            flag=0
+            sleepTime=30
+            # do something
+            #./recover_task
+            echo "ping success -- recover thread"
+        else
+            echo "ping success -- do nothing"
+        fi
+    fi
+    sleep $sleepTime
+done
