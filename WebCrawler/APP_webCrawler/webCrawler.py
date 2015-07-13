@@ -178,7 +178,7 @@ def getMissPage():
     output = open('miss.txt', 'rb')
     items = output.readlines()
     for i in items:
-        x, y = i.split()
+        x, y = i.split('\t')
         if os.path.exists(x) == False:
             os.mkdir(x)
         while(True):
