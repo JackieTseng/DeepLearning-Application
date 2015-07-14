@@ -175,20 +175,33 @@ def getMainUrls(url):
         output.close()
 
 def getMissPage():
+    temp = {} 
     output = open('miss.txt', 'rb')
     items = output.readlines()
     for i in items:
         x, y = i.split('\t')
         if os.path.exists(x) == False:
             os.mkdir(x)
+        counter = 0
         while(True):
+            if counter == 20:
+                break
             try:
                 getItemInfo(x, y)
+                temp[x] = y
                 break
             except:
                 print " fail..."
                 pass
+            counter += 1
     output.close()
+    newOutput = open('miss.txt', 'wb')
+    for i in items:
+        x, y = i.split('\t')
+        if x not in temp:
+            newOutput.write(x + '\t' + y + '\n')
+    newOutput.close()
+
 
 if __name__ == "__main__":
     getMainUrls('https://itunes.apple.com/us/genre/ios/id36?mt=8')
