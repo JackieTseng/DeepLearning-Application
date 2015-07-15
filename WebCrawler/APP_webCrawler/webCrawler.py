@@ -199,7 +199,7 @@ def getMissPage():
     for i in items:
         x, y = i.split('\t')
         if x not in temp:
-            newOutput.write(x + '\t' + y + '\n')
+            newOutput.write(x + '\t' + y)
     newOutput.close()
 
 
