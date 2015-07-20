@@ -4,10 +4,10 @@
 import os, sys
 import numpy as np
 
+# Translate string List to float
 def strListToFlatList(line):
     temp = []
     for i in line:
-        #print i 
         temp.append(float(i))
     return temp
 
@@ -35,7 +35,6 @@ def pca(mx):
     
     # return transform matrix
     Y = mx * P
-
     return Y
 
 if __name__ == '__main__':
@@ -48,6 +47,8 @@ if __name__ == '__main__':
     for i in lines:
         items = i.split(',')
         name.append(items[0])
+        # transform data type
         data.append(strListToFlatList(items[1:]))
+    # set as matrix
     mx = np.mat(data)
     pca(mx)
