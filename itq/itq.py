@@ -22,6 +22,7 @@ def itq(V, n):
     
     # Fix and Update iterations
     for i in range(n):
+        print 'Iteration ' + str(i + 1) + ' loading..'
         # Fix R and update B(UX)
         Z = V * R
         (row, col) = Z.shape

@@ -11,3 +11,7 @@ Listed below are the 6 general steps for performing a principal component analys
 ###Reference
 * [Implementing a Principal Component Analysis](http://sebastianraschka.com/Articles/2014_pca_step_by_step.html)
 * [The mathematical principles of PCA](http://dataunion.org/13702.html)
+
+##Summarizing the ITQ approach
+1. Dimensionality Reduction : **PCA|CCA**
+2. Binary Quantization
