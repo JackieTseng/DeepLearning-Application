@@ -35,7 +35,7 @@ def pca(mx, bit):
     for i in range(col):
         mx[:, i] -= mx[:, i].mean()
 
-    # Step 2 -> scatter matrix
+    # Step 2 -> covariance matrix
     cov = np.cov(mx, rowvar = 0)
 
     # Step 3 -> eigenvectors and eigenvalues
