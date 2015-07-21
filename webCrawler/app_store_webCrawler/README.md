@@ -6,4 +6,4 @@
 
 This web crawler is only applied to grab the information on App store website for project requirements.
 
-Website entry : https://itunes.apple.com/us/genre/ios/id36?mt=8
+[AppStore](https://itunes.apple.com/us/genre/ios/id36?mt=8)
