@@ -22,3 +22,6 @@ Listed below are the 6 general steps for performing a principal component analys
 
 ###Dependencies
 * *Numpy 1.9.2* Library in Python
+
+##Large Data Solution
+PCA: Block and split the data set _n*c matrix_ by columns into several file, such as _n*10 matrix_, which stores several whole columns of the data set. And calculate each block of the __scatter matrix__ and embed them back to the blank of original big _n*c matrix_. Finaly write the _c*c scatter matrix_ to disk.
