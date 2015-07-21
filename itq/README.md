@@ -13,5 +13,12 @@ Listed below are the 6 general steps for performing a principal component analys
 * [The mathematical principles of PCA](http://dataunion.org/13702.html)
 
 ##Summarizing the ITQ approach
-1. Dimensionality Reduction : **PCA|CCA**
-2. Binary Quantization
+1.  Dimensionality Reduction : **PCA|CCA**
+2.  Binary Quantization
+    + A. initialization ***R*** (c*c matrix) as a random orthogonal matrix
+    + B. Fix ***R*** and update ***B*** (n*c matrix)
+    + C. Fix ***B*** and update ***R***
+    + D. Judge iterations finish, return to step B if no
+
+###Dependencies
+* *Numpy 1.9.2* Library in Python
