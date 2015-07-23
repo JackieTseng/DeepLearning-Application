@@ -3,11 +3,16 @@
 #include "hashTable.h"
 
 class MIH {
-    public:
-        MIH(int);
-        
-        int tableNumber;
-        vector<HashTable> hashTable; 
+public:
+    MIH(int);
+    ~MIH();
+    void initBinary();
+    set<int> searchCandidates(bitset<BITWIDTH>, int);
+    vector<bitset<SPLITWIDTH> > split(bitset<BITWIDTH>);
+    vector<bitset<SPLITWIDTH> > combine(int);
+
+    int tableNumber;
+    vector<HashTable> hashTable; 
 };
 
 #endif

@@ -1,14 +1,10 @@
 #include "hashTable.h"
 
+vector<bitset<BITWIDTH> > data;
+
 HashTable::HashTable(int _tableId) {
     int length = pow(2, SPLITWIDTH) - 1;
     index = vector<vector<int> >(length, vector<int>());
-    /*
-    vector<int> emptyVector;
-    for (int i = 0; i < length; i++) {
-        index.push_back(emptyVector); 
-    } 
-    */
     tableId = _tableId;
 }
 
@@ -19,6 +15,7 @@ void HashTable::makeTable() {
     int length = data.size();
     for (int i = 0; i < length; i++) {
         bitset<BITWIDTH> cur = data[i];
+        //cout << "cur : " << data[i];
         unsigned int x;
         switch(tableId) {
             case 1:
@@ -34,6 +31,8 @@ void HashTable::makeTable() {
                 x = ((cur << 48) >> 48).to_ulong();
                 break;
         }
-        index[x].push_back(i); 
+        //cout << " " << (cur >> 48) << " = " << x;
+        index[x].push_back(i);
+        //cout << " size : " << index[x].size() << endl;
     }
 }
