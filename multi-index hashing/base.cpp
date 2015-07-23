@@ -1,28 +1,8 @@
-#include <iostream>
-#include <fstream>
-#include <cstring>
-#include <bitset>
-#include <vector>
-#include <cmath>
-using namespace std;
-#define BITWIDTH 64
-#define SPLITWIDTH 16
+#include "base.h"
 
 vector<bitset<SPLITWIDTH> > front_ones, last_ones;
 vector<bitset<BITWIDTH> > data;
-vector<int> variance(BITWIDTH);
-
-void readData(string);
-void calculateVariance();
-int hammingDis(bitset<BITWIDTH>, bitset<BITWIDTH>);
-void initBinary();
-void combine(int);
-
-int main(int argc, const char *argv[]) {
-    //readData("B.txt");
-    //calculateVariance();
-    return 0;
-}
+vector<int> variance;
 
 void readData(string fileName) {
     fstream file;
@@ -46,6 +26,9 @@ int hammingDis(bitset<BITWIDTH> a, bitset<BITWIDTH> b) {
 
 void calculateVariance() {
     int dataSize = data.size();
+    for (int i = 0; i < BITWIDTH; i++) {
+        variance.push_back(0);
+    }
     for (int i = 0; i < BITWIDTH; i++) {
         for (int j = 0; j < dataSize; j++) {
             if (data[j].test(i)) {
