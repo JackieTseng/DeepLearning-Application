@@ -3,13 +3,14 @@
 #include "basic.h"
 
 class HashTable {
-public:
-    HashTable(int);
-    ~HashTable();
-    void makeTable();
+    public:
+        HashTable(int);
+        ~HashTable();
+        void makeTable();
+        vector<vector<int> > index;
 
-    vector<vector<int> > index;
-    int tableId;
+    private:
+        int tableId;
 };
 
 #endif
