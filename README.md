@@ -5,4 +5,5 @@ Training project about Deep Learing
 * Phase 1  : Data collect by web crawler clear -- July 10th, 2015
 * Phase 2  : Feature extraction by caffe clear -- July 16th, 2015
 * Phase 3  : Feature transformation into hash code clear -- July 21th, 2015
-* Phase 4  : Multi-Index Hashing
+* Phase 4  : Multi-Index Hashing clear -- July 24th, 2015
+* Phase 5  : Optimization(Fast-RCNN and caffe model training)
