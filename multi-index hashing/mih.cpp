@@ -14,20 +14,40 @@ MIH::~MIH() {
 }
 
 set<int> MIH::searchCandidates(bitset<BITWIDTH> target, int r) {
+    double _1, _2, _3, _4;
     int var = r / tableNumber;
     set<int> result;
     vector<bitset<SPLITWIDTH> > combineBinary;
+    _1 = clock();
     for (int i = 0; i <= var; i++) {
         vector<bitset<SPLITWIDTH> > temp = combine(i);
         combineBinary.insert(combineBinary.begin(), temp.begin(), temp.end());
     }
+    _2 = clock();
     vector<bitset<SPLITWIDTH> > splitBinary = split(target);
+    _3 = clock();
     int maskNumber = combineBinary.size();
     for (int i = 0; i < tableNumber; i++) {
         for (int j = 0; j < maskNumber; j++) {
             unsigned int pos = (splitBinary[i] ^ combineBinary[j]).to_ulong();
-            cout << "Table " << i + 1 << " Pos = " << pos << " Size = " << hashTable[i].index[pos].size() << endl;
+            //cout << "Table " << i + 1 << " Pos = " << pos << " Size = " << hashTable[i].index[pos].size() << endl;
             result.insert(hashTable[i].index[pos].begin(), hashTable[i].index[pos].end());
+        }
+    }
+    _4 = clock();
+    cout << "Combine time " << _2 - _1 << endl;
+    cout << "Split   time " << _3 - _2 << endl;
+    cout << "Find ca time " << _4 - _3 << endl;
+    return result;
+}
+
+set<int> MIH::selectGoal(set<int>& candidate, bitset<BITWIDTH> target, int r) {
+    set<int> result;
+    for (set<int>::iterator it = candidate.begin(); it != candidate.end(); it++) {
+        bitset<BITWIDTH> temp = data[(*it)];
+        int dis = calHammingDis(temp, target);
+        if (dis <= r) {
+            result.insert(*it);
         }
     }
     return result;
@@ -96,4 +116,15 @@ vector<bitset<SPLITWIDTH> > MIH::split(bitset<BITWIDTH> x) {
     result.push_back(bitset<SPLITWIDTH>(((x << (BITWIDTH / 4 * 2)) >> (BITWIDTH / 4 * 3)).to_ulong()));
     result.push_back(bitset<SPLITWIDTH>(((x << (BITWIDTH / 4 * 3)) >> (BITWIDTH / 4 * 3)).to_ulong()));
     return result;
+}
+
+int MIH::calHammingDis(bitset<BITWIDTH> a, bitset<BITWIDTH> b) {
+    //unsigned long t = (a ^ b).to_ulong();
+    bitset<BITWIDTH> t = (a ^ b);
+    int counter = 0;
+    while (t != bitset<BITWIDTH>(0)) {
+        counter += ((t & bitset<BITWIDTH>(0x01)) != bitset<BITWIDTH>(0));
+        t >>= 1;
+    }
+    return counter;
 }

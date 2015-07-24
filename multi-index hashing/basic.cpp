@@ -13,16 +13,6 @@ void readData(string fileName) {
     return;
 }
 
-int hammingDis(bitset<BITWIDTH> a, bitset<BITWIDTH> b) {
-    unsigned long t = (a ^ b).to_ulong();
-    int counter = 0;
-    while (t) {
-        counter += (t & 0x01);
-        t >>= 1;
-    }
-    return counter;
-}
-
 void calculateVariance() {
     int dataSize = data.size();
     for (int i = 0; i < BITWIDTH; i++) {
