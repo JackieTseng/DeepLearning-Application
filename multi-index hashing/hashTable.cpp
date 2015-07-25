@@ -13,23 +13,11 @@ HashTable::~HashTable() {
 
 void HashTable::makeTable() {
     int length = data.size();
+    unsigned long x;
+    int single_length = SPLITWIDTH;
+    int whole_length = single_length * (HASHTABLENUMBER - 1);
     for (int i = 0; i < length; i++) {
-        bitset<BITWIDTH> cur = data[i];
-        unsigned int x;
-        switch(tableId) {
-            case 1:
-                x = (cur >> 48).to_ulong();
-                break;
-            case 2:
-                x = ((cur << 16) >> 48).to_ulong();
-                break;
-            case 3:
-                x = ((cur << 32) >> 48).to_ulong();
-                break;
-            case 4:
-                x = ((cur << 48) >> 48).to_ulong();
-                break;
-        }
+        x = ((data[i] << ((tableId - 1) * (single_length))) >> whole_length).to_ulong();
         index[x].push_back(i);
     }
 }

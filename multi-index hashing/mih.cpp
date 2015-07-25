@@ -1,6 +1,6 @@
 #include "mih.h"
 
-MIH::MIH(int _tableNumber) {
+MIH::MIH(const int& _tableNumber) {
     tableNumber = _tableNumber;
     for (int i = 1; i < tableNumber + 1; i++) {
         HashTable* x = new HashTable(i);
@@ -16,31 +16,32 @@ MIH::~MIH() {
     }
 }
 
-set<int> MIH::searchCandidates(bitset<BITWIDTH> target, int r) {
+set<int>& MIH::searchCandidates(const bitset<BITWIDTH>& target, const int& r, set<int>& result) {
     int var = r / tableNumber;
-    set<int> result;
+    var = (var < 1)? 1 : var;
     vector<bitset<SPLITWIDTH> > combineBinary;
+    vector<bitset<SPLITWIDTH> > temp;
     for (int i = 0; i <= var; i++) {
-        vector<bitset<SPLITWIDTH> > temp = combine(i);
+        temp = combine(i, temp);
         combineBinary.insert(combineBinary.begin(), temp.begin(), temp.end());
+        temp.clear();
     }
-    vector<bitset<SPLITWIDTH> > splitBinary = split(target);
+    unsigned long pos;
+    vector<bitset<SPLITWIDTH> > splitBinary;
+    splitBinary = split(target, splitBinary);
     int maskNumber = combineBinary.size();
     for (int i = 0; i < tableNumber; i++) {
         for (int j = 0; j < maskNumber; j++) {
-            unsigned int pos = (splitBinary[i] ^ combineBinary[j]).to_ulong();
+            pos = (splitBinary[i] ^ combineBinary[j]).to_ulong();
             result.insert(hashTable[i]->index[pos].begin(), hashTable[i]->index[pos].end());
         }
     }
     return result;
 }
 
-set<int> MIH::selectGoal(set<int>& candidate, bitset<BITWIDTH> target, int r) {
-    set<int> result;
-    for (set<int>::iterator it = candidate.begin(); it != candidate.end(); it++) {
-        bitset<BITWIDTH> temp = data[(*it)];
-        int dis = calHammingDis(temp, target);
-        if (dis <= r) {
+set<int>& MIH::selectGoal(const set<int>& candidate, const bitset<BITWIDTH>& target, const int& r, set<int>& result) {
+    for (set<int>::iterator it = candidate.begin(); it != candidate.end(); ++it) {
+        if (calHammingDis(data[(*it)], target) <= r) {
             result.insert(*it);
         }
     }
@@ -60,8 +61,7 @@ void MIH::initBinary() {
     }
 }
 
-vector<bitset<SPLITWIDTH> > MIH::combine(int diff_bit) {
-    vector<bitset<SPLITWIDTH> > result;
+vector<bitset<SPLITWIDTH> >& MIH::combine(const int& diff_bit, vector<bitset<SPLITWIDTH> >& result) {
     bitset<SPLITWIDTH> fx = front_ones[diff_bit];
     bitset<SPLITWIDTH> cur_bit = fx;
     int length = cur_bit.size();
@@ -101,16 +101,7 @@ vector<bitset<SPLITWIDTH> > MIH::combine(int diff_bit) {
     return result;
 }
 
-vector<bitset<SPLITWIDTH> > MIH::split(bitset<BITWIDTH> x) {
-    vector<bitset<SPLITWIDTH> > result;
-    result.push_back(bitset<SPLITWIDTH>((x >> (BITWIDTH / 4 * 3)).to_ulong()));
-    result.push_back(bitset<SPLITWIDTH>(((x << (BITWIDTH / 4)) >> (BITWIDTH / 4 * 3)).to_ulong()));
-    result.push_back(bitset<SPLITWIDTH>(((x << (BITWIDTH / 4 * 2)) >> (BITWIDTH / 4 * 3)).to_ulong()));
-    result.push_back(bitset<SPLITWIDTH>(((x << (BITWIDTH / 4 * 3)) >> (BITWIDTH / 4 * 3)).to_ulong()));
-    return result;
-}
-
-int MIH::calHammingDis(bitset<BITWIDTH> a, bitset<BITWIDTH> b) {
+int MIH::calHammingDis(const bitset<BITWIDTH>& a, const bitset<BITWIDTH>& b) {
     bitset<BITWIDTH> t = (a ^ b);
     int counter = 0;
     while (t != bitset<BITWIDTH>(0)) {

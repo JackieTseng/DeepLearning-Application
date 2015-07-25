@@ -4,14 +4,13 @@
 
 class MIH {
     public:
-        MIH(int);
+        MIH(const int&);
         ~MIH();
         void initBinary();
-        set<int> searchCandidates(bitset<BITWIDTH>, int);
-        set<int> selectGoal(set<int>&, bitset<BITWIDTH>, int);
-        vector<bitset<SPLITWIDTH> > split(bitset<BITWIDTH>);
-        vector<bitset<SPLITWIDTH> > combine(int);
-        int calHammingDis(bitset<BITWIDTH>, bitset<BITWIDTH>);
+        set<int>& searchCandidates(const bitset<BITWIDTH>&, const int&, set<int>&);
+        set<int>& selectGoal(const set<int>&, const bitset<BITWIDTH>&, const int&, set<int>&);
+        vector<bitset<SPLITWIDTH> >& combine(const int&, vector<bitset<SPLITWIDTH> >&);
+        int calHammingDis(const bitset<BITWIDTH>&, const bitset<BITWIDTH>&);
 
     private:
         int tableNumber;

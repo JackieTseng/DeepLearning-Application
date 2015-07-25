@@ -15,13 +15,13 @@ void readData(string fileName) {
 
 void calculateVariance() {
     int dataSize = data.size();
-    for (int i = 0; i < BITWIDTH; i++) {
+    for (int i = 0; i < BITWIDTH; ++i) {
         variance.push_back(0);
     }
-    for (int i = 0; i < BITWIDTH; i++) {
-        for (int j = 0; j < dataSize; j++) {
+    for (int i = 0; i < BITWIDTH; ++i) {
+        for (int j = 0; j < dataSize; ++j) {
             if (data[j].test(i)) {
-                variance[i]++;
+                ++variance[i];
             }
         }
     }
