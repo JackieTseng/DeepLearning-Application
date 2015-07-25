@@ -16,6 +16,11 @@ using namespace std;
 #define SPLITWIDTH (BITWIDTH / HASHTABLENUMBER)
 #define RADIUS 4
 
+const unsigned long m1  = 0x5555555555555555; //binary: 0101...  
+const unsigned long m2  = 0x3333333333333333; //binary: 00110011..  
+const unsigned long m4  = 0x0f0f0f0f0f0f0f0f; //binary: 4 zeros,  4 ones ...  
+const unsigned long h01 = 0x0101010101010101; //the sum of 256 to the power of 0,1,2,3...  
+
 extern vector<bitset<SPLITWIDTH> > front_ones, last_ones;
 extern vector<bitset<BITWIDTH> > data;
 extern vector<int> variance;
@@ -31,5 +36,11 @@ inline vector<bitset<SPLITWIDTH> >& split(bitset<BITWIDTH> B, vector<bitset<SPLI
         result.push_back(bitset<SPLITWIDTH>(temp));
     }
     return result;
+}
+inline int calculateOnes(unsigned long x) {
+    x -= (x >> 1) & m1;             //put count of each 2 bits into those 2 bits  
+    x = (x & m2) + ((x >> 2) & m2); //put count of each 4 bits into those 4 bits   
+    x = (x + (x >> 4)) & m4;        //put count of each 8 bits into those 8 bits   
+    return (x * h01)>>56;
 }
 #endif

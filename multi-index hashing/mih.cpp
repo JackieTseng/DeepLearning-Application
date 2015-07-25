@@ -103,10 +103,15 @@ vector<bitset<SPLITWIDTH> >& MIH::combine(const int& diff_bit, vector<bitset<SPL
 
 int MIH::calHammingDis(const bitset<BITWIDTH>& a, const bitset<BITWIDTH>& b) {
     bitset<BITWIDTH> t = (a ^ b);
-    int counter = 0;
-    while (t != bitset<BITWIDTH>(0)) {
-        counter += ((t & bitset<BITWIDTH>(0x01)) != bitset<BITWIDTH>(0));
-        t >>= 1;
+    int counter;
+    if (BITWIDTH > 64) {
+        int part = BITWIDTH / 64;
+        int single_length = 64;
+        for (int i = part - 1; i >= 0; i--) {
+            counter += calculateOnes((t >> (single_length * i)).to_ulong());
+        }
+    } else {
+        counter = calculateOnes(t.to_ulong());
     }
     return counter;
 }
