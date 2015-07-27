@@ -18,7 +18,7 @@ MIH::~MIH() {
 
 set<int>& MIH::searchCandidates(const bitset<BITWIDTH>& target, const int& r, set<int>& result) {
     int var = r / tableNumber;
-    var = (var < 1)? 1 : var;
+    //var = (var < 1)? 1 : var;
     vector<bitset<SPLITWIDTH> > combineBinary;
     vector<bitset<SPLITWIDTH> > temp;
     for (int i = 0; i <= var; i++) {

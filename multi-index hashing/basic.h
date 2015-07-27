@@ -11,18 +11,19 @@
 #include <set>
 using namespace std;
 
-#define BITWIDTH 64
+#define BITWIDTH 64 // Total binary code's width
 #define HASHTABLENUMBER 4
 #define SPLITWIDTH (BITWIDTH / HASHTABLENUMBER)
-#define RADIUS 4
+#define RADIUS 4 // The variance for the whole binary code
 
+// codes for calculating hamming weight
 const unsigned long m1  = 0x5555555555555555; //binary: 0101...  
 const unsigned long m2  = 0x3333333333333333; //binary: 00110011..  
 const unsigned long m4  = 0x0f0f0f0f0f0f0f0f; //binary: 4 zeros,  4 ones ...  
 const unsigned long h01 = 0x0101010101010101; //the sum of 256 to the power of 0,1,2,3...  
 
-extern vector<bitset<SPLITWIDTH> > front_ones, last_ones;
-extern vector<bitset<BITWIDTH> > data;
+extern vector<bitset<SPLITWIDTH> > front_ones, last_ones; // codes like 0000.., 1000.., 1100.. and ..0111, ..0011, ..0001
+extern vector<bitset<BITWIDTH> > data; // dataset
 extern vector<int> variance;
 
 void readData(string);
@@ -37,6 +38,7 @@ inline vector<bitset<SPLITWIDTH> >& split(bitset<BITWIDTH> B, vector<bitset<SPLI
     }
     return result;
 }
+// Hamming weight using merge method form wiki
 inline int calculateOnes(unsigned long x) {
     x -= (x >> 1) & m1;             //put count of each 2 bits into those 2 bits  
     x = (x & m2) + ((x >> 2) & m2); //put count of each 4 bits into those 4 bits   
