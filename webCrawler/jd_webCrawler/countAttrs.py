@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 import sys, os
 
+#251894 items
 ATTRSVALUE = {}
 ATTRS = {}
 
@@ -28,13 +29,18 @@ def processFile(fileName):
 def processSingleDir(dirName):
     preCounter = 1
     postCounter = 1
+    processFlag = False
     while True:
         postCounter = 1
+        processFlag = False
         print "item " + str(preCounter),
         if os.path.exists(dirName + '/' + str(preCounter) + '.txt'):
             curFile = dirName + '/' + str(preCounter) + '.txt'
             processFile(curFile)
-        elif os.path.exists(dirName + '/' + str(preCounter) + '_' + str(postCounter) + '.txt'):
+            processFlag = True
+
+        if os.path.exists(dirName + '/' + str(preCounter) + '_' + str(postCounter) + '.txt'):
+            processFlag = True
             while True:
                 curFile = dirName + '/' + str(preCounter) + '_' + str(postCounter) + '.txt'
                 if os.path.exists(curFile):
@@ -42,7 +48,8 @@ def processSingleDir(dirName):
                     postCounter += 1
                 else:
                     break
-        else:
+
+        if processFlag == False:
             break
         preCounter += 1
         print "done.."
