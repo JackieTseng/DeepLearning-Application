@@ -71,11 +71,9 @@ def processFile(fileName):
     if material_number == -1:
         material_number = label_numbers[2] - 1
     else:
-        if material_number == 2 or material_number == 3 or material_number == 4:
+        if material_number == 2 or material_number == 3 or material_number == 4 or material_number == 5:
             material_number -= 1
-        elif material_number == 5 or material_number == 6 or material_number == 7:
-            material_number = 4
-        elif material_number == 8:
+        elif material_number == 6 or material_number == 7 or material_number == 8:
             material_number = 5
     material_string = changeString(material_string, material_number)
 
@@ -167,10 +165,10 @@ def construct_string(label_numbers):
 if __name__ == "__main__":
     read_standard_labels(label_file_names)
     construct_string(label_numbers)
-    temp = []
-    temp.append(dir_Names[7])
-    processAllDir(temp)
-    #processAllDir(dir_Names)
-    #processFile('YaoShiBao/535.txt')
+    #temp = []
+    #temp.append(dir_Names[7])
+    #processAllDir(temp)
+    processAllDir(dir_Names)
+    #processFile('YaoShiBao/2_1.txt')
     #for i in data:
     #    print i[0] + " " + i[1]
