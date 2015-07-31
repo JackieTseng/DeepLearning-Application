@@ -7,7 +7,7 @@
 6. Check the candidates by Hamming Distance and calculate the union of the ***m*** sets as the result
 
 ##Reference
-[Fast Search in Hamming Space with Multi-Index Hashing]("http://www.cs.toronto.edu/~norouzi/research/papers/multi_index_hashing.pdf")
+[Fast Search in Hamming Space with Multi-Index Hashing](http://www.cs.toronto.edu/~norouzi/research/papers/multi_index_hashing.pdf)
 
 ##Optimization
 1. Set the binary code longer as 128 or 256 bits, the longer the better performance.

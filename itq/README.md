@@ -20,8 +20,11 @@ Listed below are the 6 general steps for performing a principal component analys
     + C. Fix ***B*** and update ***R***
     + D. Judge iterations finish, return to step B if no
 
+###Reference
+* [Iterative Quantization: A Procrustean Approach to Learning Binary Codes](http://www.cs.unc.edu/~lazebnik/publications/cvpr11_small_code.pdf)
+
 ###Dependencies
 * *Numpy 1.9.2* Library in Python
 
 ##Large Data Solution
-PCA: Block and split the data set _n*c matrix_ by columns into several file, such as _n*10 matrix_, which stores several whole columns of the data set. And calculate each block of the __covariance matrix__ and embed them back to the blank of original big _n*c matrix_. Finaly write the _c*c covariance matrix_ to disk.
+* PCA: Block and split the data set _n*c matrix_ by columns into several file, such as _n*10 matrix_, which stores several whole columns of the data set. And calculate each block of the __covariance matrix__ and embed them back to the blank of original big _n*c matrix_. Finaly write the _c*c covariance matrix_ to disk.
