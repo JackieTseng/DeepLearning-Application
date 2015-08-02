@@ -9,7 +9,7 @@
 * Computes features for each proposal using a large convolutional neural network (***CNN***)
 * Classifies each region using class-specific linear ***SVMs*** and score
 
-![R-CNN Procedure](/img/R-CNN.png)
+![R-CNN Procedure](img/R-CNN.png)
 
 ##Model Design
 * Region proposals : use [***selective search***](http://koen.me/research/pub/uijlings-ijcv2013-draft.pdf) to generate around **2000** category-independent region proposals and compute a fix-size CNN input by ***affine image warping***
