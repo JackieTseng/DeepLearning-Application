@@ -10,7 +10,7 @@ class MIH {
         set<int>& searchCandidates(const bitset<BITWIDTH>&, const int&, set<int>&);
         set<int>& selectGoal(const set<int>&, const bitset<BITWIDTH>&, const int&, set<int>&);
         vector<bitset<SPLITWIDTH> >& combine(const int&, vector<bitset<SPLITWIDTH> >&);
-        int calHammingDis(const bitset<BITWIDTH>&, const bitset<BITWIDTH>&);
+        int calHammingDis(const bitset<BITWIDTH>&, const bitset<BITWIDTH>&, const int&);
 
     private:
         int tableNumber;

@@ -40,8 +40,9 @@ set<int>& MIH::searchCandidates(const bitset<BITWIDTH>& target, const int& r, se
 }
 
 set<int>& MIH::selectGoal(const set<int>& candidate, const bitset<BITWIDTH>& target, const int& r, set<int>& result) {
+    int counter = 0;
     for (set<int>::iterator it = candidate.begin(); it != candidate.end(); ++it) {
-        if (calHammingDis(data[(*it)], target) <= r) {
+        if (calHammingDis(data[(*it)], target, r) <= r) {
             result.insert(*it);
         }
     }
@@ -101,15 +102,21 @@ vector<bitset<SPLITWIDTH> >& MIH::combine(const int& diff_bit, vector<bitset<SPL
     return result;
 }
 
-int MIH::calHammingDis(const bitset<BITWIDTH>& a, const bitset<BITWIDTH>& b) {
+int MIH::calHammingDis(const bitset<BITWIDTH>& a, const bitset<BITWIDTH>& b, const int& r) {
     bitset<BITWIDTH> t = (a ^ b);
-    int counter;
+    int counter = 0;
     if (BITWIDTH > 64) {
-        int part = BITWIDTH / 64;
+        int part = BITWIDTH / 64 + ((BITWIDTH % 64 == 0)? 0 : 1);
         int single_length = 64;
         for (int i = part - 1; i >= 0; i--) {
-            counter += calculateOnes((t >> (single_length * i)).to_ulong());
+            std::string temp_string = (t >> (single_length * i)).to_string().substr(BITWIDTH - 64, BITWIDTH - 1);
+            bitset<64> temp_bitset = bitset<64>(temp_string);
+            counter += calculateOnes(temp_bitset.to_ulong());
+            if (counter > r) {
+                return counter;
+            }
         }
+        //counter = calculateOnes_2(t);
     } else {
         counter = calculateOnes(t.to_ulong());
     }
