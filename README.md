@@ -8,4 +8,4 @@ Training project about Deep Learing
 * Phase 4 : Multi-Index Hashing clear -- July 24th, 2015
 * Phase 5 : Multi-label caffe model training clear -- July 31st, 2015
 * Phase 6 : Modules connected by socket clear -- Aug 4th, 2015
-* Phase 7 : Optimization(Fast-RCNN, MIH,  Piecewise caffe model training according to different label info concerned)
+* Phase 7 : Optimization(Fast-RCNN, MIH, Piecewise caffe model training according to different label info concerned)

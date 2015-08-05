@@ -10,5 +10,7 @@
 [Fast Search in Hamming Space with Multi-Index Hashing](http://www.cs.toronto.edu/~norouzi/research/papers/multi_index_hashing.pdf)
 
 ##Optimization
-1. Set the binary code longer as 128 or 256 bits, the longer the better performance.
-2. Process the dataset in advance by resorting the variance of each bit for balancing each hash table's variance and reduce the candidates set for better performance both in speed and precision.
+1. Set the binary code longer as 128 or 256 bits, the longer the better performance(now using 1000 bits).
+2. Process the dataset in advance by resorting the order of each bit column according to the variance of each bit for balancing each hash table's variance and reduce the candidates set for better performance both in speed and precision. Consider deleting some bit with little variance.
+3. Use multi-core of CPU to search for result (pay attention to no deadlock here)
+4. The effective [Hamming Weight](https://en.wikipedia.org/wiki/Hamming_weight) algorithm is recommended.
