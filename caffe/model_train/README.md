@@ -1,8 +1,8 @@
 #Multi-label CNN Caffe Model Training
 
 ###Dependence
-* [caffe](http://caffe.berkeleyvision.org/) installed
-* google_net or other pre-trained model installed, [ImageNet example](http://caffe.berkeleyvision.org/gathered/examples/imagenet.html)
+* [caffe](http://) installed
+* google_net or other pre-trained model installed, [example](http://)
 
 ###Model Adjustment (mark following TODO comment)
 * include/data_layers.hpp
@@ -17,3 +17,11 @@
 ```
 ./build/tools/caffe train --solver=models/bvlc_googlenet/jd_solver.prototxt
 ```
+* Continue training with existing model : set right the file path
+```
+./train_quick.sh
+```
+
+###Fix Bugs
+* Exception handling when picture read is broken or no-exist
+* Reduce the batch size of train or test when memory limited

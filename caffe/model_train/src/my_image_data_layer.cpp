@@ -82,6 +82,7 @@ void MyImageDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
   // Read an image, and use it to initialize the top blob.
   cv::Mat cv_img = ReadImageToCVMat(root_folder + lines_[lines_id_].first,
                                     new_height, new_width, is_color);
+  //TODO: Jackie
   // Use data_transformer to infer the expected blob shape from a cv_image.
   vector<int> top_shape = this->data_transformer_->InferBlobShape(cv_img);
   this->transformed_data_.Reshape(top_shape);
@@ -135,6 +136,22 @@ void MyImageDataLayer<Dtype>::InternalThreadEntry() {
   // on single input batches allows for inputs of varying dimension.
   cv::Mat cv_img = ReadImageToCVMat(root_folder + lines_[lines_id_].first,
       new_height, new_width, is_color);
+  //TODO: Jackie
+  //Desc: Fix bug when picture is broken or no-exist
+  while (cv_img.data == NULL) {
+      ++lines_id_;
+      const int lines_size = lines_.size();
+      if (lines_id_ >= lines_size) {
+          // We have reached the end. Restart from the first.
+          DLOG(INFO) << "Restarting data prefetching from start.";
+          lines_id_ = 0;
+          if (this->layer_param_.my_image_data_param().shuffle()) {
+              ShuffleImages();
+          }
+        }
+        cv::Mat cv_img = ReadImageToCVMat(root_folder + lines_[lines_id_].first,
+            new_height, new_width, is_color);
+  }
   // Use data_transformer to infer the expected blob shape from a cv_img.
   vector<int> top_shape = this->data_transformer_->InferBlobShape(cv_img);
   this->transformed_data_.Reshape(top_shape);
@@ -153,7 +170,22 @@ void MyImageDataLayer<Dtype>::InternalThreadEntry() {
     CHECK_GT(lines_size, lines_id_);
     cv::Mat cv_img = ReadImageToCVMat(root_folder + lines_[lines_id_].first,
         new_height, new_width, is_color);
-    CHECK(cv_img.data) << "Could not load " << lines_[lines_id_].first;
+    //TODO: Jackie
+    //Desc: Fix bug when picture is broken or no-exist
+    if (cv_img.data == NULL) {
+        --item_id;
+        lines_id_++;
+        if (lines_id_ >= lines_size) {
+          // We have reached the end. Restart from the first.
+          DLOG(INFO) << "Restarting data prefetching from start.";
+          lines_id_ = 0;
+          if (this->layer_param_.my_image_data_param().shuffle()) {
+            ShuffleImages();
+          }
+        }
+        continue;
+    }
+    //CHECK(cv_img.data) << "Could not load " << lines_[lines_id_].first;
     read_time += timer.MicroSeconds();
     timer.Start();
     // Apply transformations (mirror, crop...) to the image
