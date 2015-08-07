@@ -13,4 +13,5 @@
 1. Set the binary code longer as 128 or 256 bits, the longer the better performance(now using 1000 bits).
 2. Process the dataset in advance by resorting the order of each bit column according to the variance of each bit for balancing each hash table's variance and reduce the candidates set for better performance both in speed and precision. Consider deleting some bit with little variance.
 3. Use multi-core of CPU to search for result (pay attention to no deadlock here)
-4. The effective [Hamming Weight](https://en.wikipedia.org/wiki/Hamming_weight) algorithm is recommended.
+4. The effective [Hamming Weight](https://en.wikipedia.org/wiki/Hamming_weight) algorithm is recommended or using the memory counting the ones in all possibilities of a N-bit code for reducing time
+5. STL **bitset** may bring down the performance when data become scalable
