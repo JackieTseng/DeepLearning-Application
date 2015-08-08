@@ -2,9 +2,8 @@
 #include "SocketException.h"
 #include <iostream>
 #include <string>
-using namespace std;
 
-const string kServer_Address = "172.22.192.45";
+const std::string kServer_Address = "172.22.192.45";
 
 int main(int argc, char* argv[]){
     try {

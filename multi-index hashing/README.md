@@ -15,3 +15,7 @@
 3. Use multi-core of CPU to search for result (pay attention to no deadlock here)
 4. The effective [Hamming Weight](https://en.wikipedia.org/wiki/Hamming_weight) algorithm is recommended or using the memory counting the ones in all possibilities of a N-bit code for reducing time
 5. STL **bitset** may bring down the performance when data become scalable
+
+##TODO
+- [ ] Transform the data storing from bitset to unsigned char
+- [ ] Optimizate the model

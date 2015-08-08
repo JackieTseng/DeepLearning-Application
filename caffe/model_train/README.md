@@ -1,7 +1,7 @@
 #Multi-label CNN Caffe Model Training
 
 ###Dependence
-* [caffe](http://) installed
+* [caffe](http://caffe.berkeleyvision.org/) installed
 * google_net or other pre-trained model installed, [example](http://)
 
 ###Model Adjustment (mark following TODO comment)

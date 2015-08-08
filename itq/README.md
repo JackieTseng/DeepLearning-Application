@@ -28,3 +28,5 @@ Listed below are the 6 general steps for performing a principal component analys
 
 ##Large Data Solution
 * PCA: Block and split the data set _n*c matrix_ by columns into several file, such as _n*10 matrix_, which stores several whole columns of the data set. And calculate each block of the __covariance matrix__ and embed them back to the blank of original big _n*c matrix_. Finaly write the _c*c covariance matrix_ to disk.
+* ITQ: Limited by the memory, we can't put all the matrix into memory for calculating the R matrix. Instead, we use the part of dataset randomly selected to calculate result though it may influence the effect.
+* After testing in the MIH module following, we found that PCA process will highly reduce the information in original double codes. It better performs using only ITQ completing the transformation.

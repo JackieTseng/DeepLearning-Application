@@ -4,7 +4,6 @@
 #include <string>
 #include <errno.h>
 #include <fcntl.h>
-using namespace std;
 
 Socket::Socket() : m_sock(-1) {
     memset(&m_addr, 0, sizeof(m_addr));
@@ -80,7 +79,7 @@ int Socket::recv(std::string& s)const {
     memset(buf, 0, MAXRECV + 1);
     int status = ::recv(m_sock, buf, MAXRECV, 0);
     if (status == -1) {
-        cout << "status == -1   errno == " << errno << "  in Socket::recv\n";
+        std::cout << "status == -1   errno == " << errno << "  in Socket::recv\n";
         return 0;
     } else if (status == 0) {
         return 0;
