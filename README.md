@@ -1,6 +1,6 @@
 # DeepLearing
 
-**Search Image by Image**, a training project about Deep Learing application
+**Search Images by Image**, a project about Deep Learing application
 
 **Based on E-commerce Sites's Goods Search**
 
