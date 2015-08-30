@@ -4,7 +4,7 @@
 
 **Based on E-commerce Sites's Goods Search**
 
-* Phase 1 : Data collect by web crawler clear -- July 10th, 2015
+* Phase 1 : Data collection by web crawler clear -- July 10th, 2015
 * Phase 2 : Feature extraction by caffe clear -- July 16th, 2015
 * Phase 3 : Feature transformation into hash code clear -- July 21th, 2015
 * Phase 4 : Multi-Index Hashing clear -- July 24th, 2015
@@ -23,3 +23,10 @@
 
 
 ![search three](img/result_3.png)
+
+## About
+
+* [Github Repository](https://github.com/JackieTseng/DeepLearning-Application)
+* Author : Zhuobin Zheng(Jackie Tseng)
+* Aug. 2015
+
