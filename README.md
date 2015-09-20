@@ -1,6 +1,6 @@
 # DeepLearing
 
-**Search by Image**, a training project about Deep Learing
+**Search Image by Image**, a training project about Deep Learing application
 
 * Phase 1 : Data collect by web crawler clear -- July 10th, 2015
 * Phase 2 : Feature extraction by caffe clear -- July 16th, 2015
