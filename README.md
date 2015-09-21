@@ -1,6 +1,7 @@
 # DeepLearing
 
 **Search Image by Image**, a training project about Deep Learing application
+**Based on E-commerce Sites's Goods Search**
 
 * Phase 1 : Data collect by web crawler clear -- July 10th, 2015
 * Phase 2 : Feature extraction by caffe clear -- July 16th, 2015
