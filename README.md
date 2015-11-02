@@ -12,3 +12,14 @@
 * Phase 6 : Modules connected by socket clear -- Aug 4th, 2015
 * Phase 7 : Optimization(Fast-RCNN, MIH, Weight-based piecewise caffe model training according to different label info concerned) -- Aug 13th, 2015
 * Project Completed -- Aug 14th, 2015
+
+
+## Result Screenshot
+
+![search one](img/result_1.png)
+
+
+![search two](img/result_2.png)
+
+
+![search three](img/result_3.png)
